@@ -1,15 +1,16 @@
 import React from 'react'
-import { Header, Footer, Herobanner, BlogcardSection, Signup , Signin } from './Components'
+import { Header, Footer, Herobanner, BlogcardSection, Signup, Signin, Blogcreate } from './Components'
 
 const App = () => {
   return (
     <>
-      {/* <Header />
+      <Header />
       <Herobanner />
       <BlogcardSection />
       <Signup />
       <Signin />
-      <Footer /> */}
+      <Blogcreate/>
+      <Footer />
     </>
   )
 }

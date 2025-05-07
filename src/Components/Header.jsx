@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaPen } from 'react-icons/fa';
+import { FaPen, FaHome, FaUser, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import logo from '../assets/Blogzilla Logo.png';
 
 const Header = () => {
@@ -34,7 +34,10 @@ const Header = () => {
                 {/* Navigation */}
                 <nav className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium w-full md:w-auto">
                     <NavLink to="/" className={navLinkClass}>
-                        Home
+                        <div className="flex items-center gap-2">
+                            <FaHome size={14} />
+                            Home
+                        </div>
                     </NavLink>
 
                     {isLoggedIn && (
@@ -54,15 +57,24 @@ const Header = () => {
 
                     {isLoggedIn ? (
                         <NavLink to="/profile" className={navLinkClass}>
-                            Profile
+                            <div className="flex items-center gap-2">
+                                <FaUser size={14} />
+                                Profile
+                            </div>
                         </NavLink>
                     ) : (
                         <>
                             <NavLink to="/login" className={navLinkClass}>
-                                Sign In
+                                <div className="flex items-center gap-2">
+                                    <FaSignInAlt size={14} />
+                                    Sign In
+                                </div>
                             </NavLink>
                             <NavLink to="/signup" className={navLinkClass}>
-                                Sign Up
+                                <div className="flex items-center gap-2">
+                                    <FaUserPlus size={14} />
+                                    Sign Up
+                                </div>
                             </NavLink>
                         </>
                     )}
