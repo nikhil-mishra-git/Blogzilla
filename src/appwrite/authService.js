@@ -2,7 +2,7 @@ import conf from "../Conf/conf";
 import { Client, Account, ID } from "appwrite";
 
 // Create a Class
-class AuthService {
+export class AuthService {
     client = new Client();
     account;
 
@@ -48,7 +48,7 @@ class AuthService {
             const userGet = await this.account.get();
             if (userGet) return user;
         } catch (error) {
-           console.log("Appwrite :: User Get Error : ",error);
+            console.log("Appwrite :: User Get Error : ", error);
         }
 
         return null;
