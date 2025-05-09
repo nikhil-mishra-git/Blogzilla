@@ -1,37 +1,45 @@
 import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import HerobannerImage from '../assets/Herobanner.jpg';
+import blogServices from '../appwrite/blogService'
+import { Link } from 'react-router-dom';
 
-const Blogcard = () => {
+const Blogcard = ({ $id, title, content, author, publishDate }) => {
     return (
-        <div className="bg-white shadow-md overflow-hidden flex flex-col h-full">
-            {/* Image Section */}
-            <img
-                src={HerobannerImage}
-                alt="Card Image"
-                className="w-full h-60 object-cover"
-            />
+        <Link to={`/blog/${$id}`}>
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition duration-300 overflow-hidden flex flex-col max-w-sm mx-auto">
+                {/* Image */}
+                <img
+                    src={blogServices.getImagePrev(bannerImage)}
+                    alt="Blog Banner"
+                    className="w-full h-52 object-cover"
+                />
 
-            {/* Content Section */}
-            <div className="p-4 flex flex-col flex-grow justify-between">
-                {/* Title */}
-                <h2 className="text-lg font-semibold text-gray-800 mb-1">
-                    Blog Title Goes Here
-                </h2>
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-grow">
+                    {/* Title */}
+                    <h2 className="text-xl font-bold text-gray-900 mb-2 leading-snug text-center">
+                        {title}
+                    </h2>
 
-                {/* Description */}
-                <p className="text-sm text-gray-600 mb-4">
-                    A short and engaging description that gives readers a peek into the blog content.
-                </p>
+                    {/* Description */}
+                    <p className="text-gray-600 text-sm mb-6 text-center">
+                        {content}
+                    </p>
 
-                {/* Read More Arrow Button */}
-                <div className="flex justify-end">
-                    <button className="w-10 h-10 flex items-center justify-center bg-black text-white rounded-full hover:bg-gray-800 transition">
-                        <FaArrowRight size={14} />
-                    </button>
+                    {/* Footer: Author + Arrow Button */}
+                    <div className="flex items-center justify-between mt-auto">
+                        {/* Author and Date */}
+                        <span className="text-xs text-zinc-700">{author} • {publishDate}</span>
+
+                        {/* Arrow Button */}
+                        <button className="w-10 h-10 flex items-center justify-center bg-black text-white rounded-full hover:bg-gray-800 transition">
+                            <FaArrowRight size={12} />
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

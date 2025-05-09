@@ -6,7 +6,7 @@ const Herobanner = () => {
         <section className="flex my-8 flex-col md:flex-row items-center gap-10 justify-between max-w-[1350px] mx-auto px-6 py-8">
             {/* Left Side: Blog Title, Author, Date, Description, and Button */}
             <div className="flex flex-col gap-5 w-full md:w-1/2 text-center md:text-left">
-                <h1 className="text-4xl font-bold text-gray-800">
+                <h1 className="text-4xl font-bold text-gray-800 leading-snug">
                     Blog Title Goes Here
                 </h1>
                 <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-gray-600">
@@ -22,17 +22,17 @@ const Herobanner = () => {
                 </p>
 
                 {/* Read More Button */}
-                <button className="px-6 py-4 w-40 mt-4 bg-black text-white rounded-full hover:bg-gray-800 transition">
+                <button className="px-6 py-3 w-40 mt-4 bg-black text-white rounded-full focus:outline-none">
                     Read More
                 </button>
             </div>
 
             {/* Right Side: Image */}
-            <div className="w-full md:w-1/2 md:mt-0 mt-8"> {/* Right Side: Image */}
+            <div className="w-full md:w-1/2 md:mt-0 mt-8">
                 <img
-                    src={HerobannerImage} // Use the imported variable
+                    src={HerobannerImage}
                     alt="Blog Banner"
-                    className="w-full h-auto object-cover"
+                    className="w-full h-auto object-cover rounded-2xl"
                 />
             </div>
         </section>
