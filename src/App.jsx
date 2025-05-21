@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import authService from './appwrite/authService'
 import { login, logout } from './Store/authSlice'
 import { Outlet } from 'react-router-dom'
+import HomePage from './Pages/Home'
 
 
 const App = () => {

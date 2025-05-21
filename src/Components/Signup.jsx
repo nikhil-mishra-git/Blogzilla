@@ -44,8 +44,8 @@ const Signup = () => {
     };
 
     return (
-        <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-            <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
+        <section className="min-h-[70vh] flex items-start justify-center bg-gray-100 px-4">
+            <div className="bg-white shadow-xl rounded-xl my-15 p-8 w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Create an Account</h2>
                 {error && <p className="text-red-600 my-4 text-center">{error}</p>}
 
