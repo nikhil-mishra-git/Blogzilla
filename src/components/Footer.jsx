@@ -39,7 +39,7 @@ const Footer = () => {
 
                 {/* Bottom Line */}
                 <div className="mt-6 text-center text-xs text-gray-500">
-                    © {new Date().getFullYear()} Blogzilla — Built with by Nikhil Mishra
+                    © {new Date().getFullYear()} Blogzilla — Built by Nikhil Mishra
                 </div>
             </Container>
         </footer>

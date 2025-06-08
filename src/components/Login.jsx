@@ -1,62 +1,104 @@
+import React, { useState } from "react";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { Input } from './index';
+import { Link, useNavigate } from "react-router-dom";
+import { login as authLogin } from '../features/authSlice';
+import authService from "../services/authService";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
     const { register, handleSubmit } = useForm();
+    const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const onSubmit = (data) => {
-        console.log("Login Data: ", data);
-        // You can connect Appwrite login here
+    const onLoginSubmit = async (data) => {
+        setError('');
+        setLoading(true);
+        try {
+            const userSession = await authService.loginUser(data);
+            if (userSession) {
+                const currUserData = await authService.getUser();
+                if (currUserData) {
+                    dispatch(authLogin(currUserData));
+                    navigate("/");
+                }
+            }
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-            <div className="bg-white rounded-2xl shadow-lg p-8 max-w-sm w-full">
+        <div className="my-[5vh] flex items-center justify-center px-4">
+            <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full">
                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-900">
                     Login to Blogzilla
                 </h2>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <div className="relative">
-                        <FaEnvelope className="absolute left-4 top-3.5 text-gray-400" />
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            {...register("email")}
-                            className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full outline-none focus:bg-white"
-                        />
-                    </div>
+                {/* Error Message */}
+                {error && (
+                    <p className="text-red-500 text-sm text-center mb-2">{error}</p>
+                )}
 
-                    <div className="relative">
-                        <FaLock className="absolute left-4 top-3.5 text-gray-400" />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            {...register("password")}
-                            className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full outline-none focus:bg-white"
-                        />
-                    </div>
+                <form onSubmit={handleSubmit(onLoginSubmit)} className="space-y-4">
+                    <Input
+                        icon={FaEnvelope}
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        {...register("email", {
+                            required: true,
+                            validate: {
+                                matchPattern: (value) =>
+                                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || "Invalid email address"
+                            }
+                        })}
+                    />
+
+                    <Input
+                        icon={FaLock}
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Password"
+                        {...register("password", {
+                            required: true,
+                            message: "Invalid Password"
+                        })}
+                        rightIcon={showPassword ? FaEye : FaEyeSlash}
+                        onRightIconClick={() => setShowPassword(!showPassword)}
+                    />
 
                     <button
                         type="submit"
-                        className="w-full py-2 rounded-full bg-black text-white hover:opacity-90 transition font-semibold"
+                        disabled={loading}
+                        className="w-full py-3 rounded-full bg-black text-white hover:bg-gray-800 transition"
                     >
-                        Sign In
+                        {loading ? "Signing In..." : "Sign In"}
                     </button>
                 </form>
 
-                <div className="my-4 text-center text-gray-400">OR</div>
+                <p className="my-4 text-sm text-center text-gray-400">OR</p>
 
-                <button className="w-full flex items-center justify-center gap-2 py-2 border rounded-full hover:bg-gray-50 transition">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
-                    <span className="text-gray-700 font-medium">Continue with Google</span>
+                <button className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition">
+                    <img
+                        src="https://www.svgrepo.com/show/475656/google-color.svg"
+                        alt="Google"
+                        className="w-5 h-5"
+                    />
+                    <span className="text-gray-700 font-medium">Login with Google</span>
                 </button>
 
                 <p className="mt-6 text-center text-sm text-gray-600">
                     Don't have an account?{" "}
-                    <span className="text-black font-semibold cursor-pointer hover:underline">
+                    <Link to="/register" className="text-black font-semibold hover:underline">
                         Sign up
-                    </span>
+                    </Link>
                 </p>
             </div>
         </div>

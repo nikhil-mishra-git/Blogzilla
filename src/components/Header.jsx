@@ -55,10 +55,9 @@ const Header = () => {
                 <nav className="px-6 flex flex-col md:flex-row items-center justify-between gap-4 md:h-20">
 
                     {/* Left: Logo + Search */}
-                    <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+                    <div className="flex items-center gap-6 w-full md:w-auto">
 
-                        <Logo height={32} />
-
+                        <Logo/>
                         <div className="relative w-full md:w-[250px]">
                             <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
                             <input
