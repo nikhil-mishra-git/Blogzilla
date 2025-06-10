@@ -6,10 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { login as authLogin } from '../features/authSlice';
 import authService from "../services/authService";
 import { useDispatch } from "react-redux";
-import { FcGoogle } from "react-icons/fc"; 
+import { FcGoogle } from "react-icons/fc";
 
 const Signup = () => {
-    const { register, handleSubmit } = useForm(); 
+    const { register, handleSubmit } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -22,6 +22,9 @@ const Signup = () => {
         setError("");
         setLoading(true);
         try {
+            if (!data.email || !data.password || !data.name) {
+                throw new Error("All fields are required");
+            }
             const userData = await authService.createUser(data);
             if (userData) {
                 const currUserData = await authService.getUser();
@@ -36,7 +39,7 @@ const Signup = () => {
     };
 
     return (
-        <section className="my-[5vh] flex items-start justify-center px-4">
+        <section className="flex items-start justify-center px-4">
             <div className="bg-white shadow-xl rounded-xl my-16 p-8 w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Create an Account</h2>
                 {error && <p className="text-red-600 my-4 text-center">{error}</p>}
@@ -55,6 +58,7 @@ const Signup = () => {
                         type="email"
                         name="email"
                         placeholder="Email"
+                        autoComplete="email"
                         {...register("email", {
                             required: "Email is required",
                             validate: {
@@ -68,13 +72,14 @@ const Signup = () => {
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         placeholder="Password"
+                        autoComplete="new-password"
                         rightIcon={showPassword ? FaEye : FaEyeSlash}
                         onRightIconClick={handlePasswordToggle}
                         {...register("password", {
                             required: "Password is required",
                             minLength: {
-                                value: 4,
-                                message: "Password must be at least 4 characters"
+                                value: 8,
+                                message: "Password must be at least 8 characters"
                             }
                         })}
                     />

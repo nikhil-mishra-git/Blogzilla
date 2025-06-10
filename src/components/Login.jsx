@@ -3,7 +3,7 @@ import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Input } from './index';
 import { Link, useNavigate } from "react-router-dom";
-import { login as authLogin } from '../features/authSlice';
+import { login as authLogin } from '../features/authSlice'; 
 import authService from "../services/authService";
 import { useDispatch } from "react-redux";
 
@@ -35,7 +35,7 @@ const Login = () => {
     };
 
     return (
-        <div className="my-[5vh] flex items-center justify-center px-4">
+        <div className="flex items-center justify-center px-4">
             <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full">
                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-900">
                     Login to Blogzilla
@@ -52,6 +52,7 @@ const Login = () => {
                         type="email"
                         name="email"
                         placeholder="Email"
+                        autoComplete="email"
                         {...register("email", {
                             required: true,
                             validate: {
@@ -66,6 +67,7 @@ const Login = () => {
                         type={showPassword ? "text" : "password"}
                         name="password"
                         placeholder="Password"
+                        autoComplete="current-password"
                         {...register("password", {
                             required: true,
                             message: "Invalid Password"

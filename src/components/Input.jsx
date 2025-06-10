@@ -20,14 +20,14 @@ const Input = forwardRef(
             <div className="relative">
                 {Icon && <Icon className="absolute top-4 left-5 text-gray-400" />}
                 <input
-                    id={inputId}
+                    id={id || inputId}
                     ref={ref}
                     type={type}
                     name={name}
                     placeholder={placeholder}
                     value={value}
                     onChange={onChange}
-                    className={`w-full py-3 pl-12 pr-${RightIcon ? '10' : '4'} rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black`}
+                    className={`w-full py-3 pl-12 ${RightIcon ? 'pr-10' : 'pr-4'} rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black`}
                     required
                     {...props}
                 />

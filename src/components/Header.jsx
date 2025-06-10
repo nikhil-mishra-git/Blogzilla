@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Logo } from './index'
+import { Container, Logo, LogoutButton } from './index'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { FaHome, FaPen, FaSearch, FaSignInAlt, FaUser, FaUserPlus } from 'react-icons/fa'
@@ -24,7 +24,7 @@ const Header = () => {
             show: true
         },
         {
-            to: '/write',
+            to: '/writeblog',
             icon: <FaPen size={14} />,
             label: 'Write',
             show: authStatus
@@ -42,7 +42,7 @@ const Header = () => {
             show: !authStatus
         },
         {
-            to: '/register',
+            to: '/signup',
             icon: <FaUserPlus size={14} />,
             label: 'Sign Up',
             show: !authStatus
@@ -84,6 +84,9 @@ const Header = () => {
                                 </NavLink>
                             )
                         ))}
+
+                        {authStatus && <LogoutButton />}
+
                     </div>
 
                 </nav>

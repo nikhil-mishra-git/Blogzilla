@@ -15,21 +15,24 @@ export class AuthService {
 
     async createUser({ email, password, name }) {
         try {
-            const userCreated = await this.account.create(ID.unique(), email, password, name)
-            return userCreated ? await this.loginUser({ email, password }) : null;
-
+            const userAccount = await this.account.create(ID.unique(), email, password, name);
+            if (userAccount) {
+                return this.loginUser({ email, password });
+            }
+            return null;
         } catch (error) {
-            console.log("Error while SignUp :: ", error);
+            console.error("Appwrite Signup Error:", error);
+            throw error;
         }
     }
 
     async loginUser({ email, password }) {
         try {
-            const userLoginSession = await this.account.createEmailPasswordSession(email, password)
-            return userLoginSession ? userLoginSession : null
-
+            const session = await this.account.createEmailPasswordSession(email, password);
+            return session;
         } catch (error) {
             console.log("Error while Login :: ", error);
+            throw error;
         }
     }
 
