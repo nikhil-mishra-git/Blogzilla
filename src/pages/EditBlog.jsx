@@ -6,12 +6,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 const EditBlog = () => {
 
     const [blog, setBlog] = useState(null)
-    const { blogId } = useParams()
+    const { id } = useParams()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (blogId) {
-            blogServices.getBlog(blogId)
+        if (id) {
+            blogServices.getBlog(id)
                 .then((blog) => {
                     if (blog) {
                         setBlog(blog)
@@ -20,13 +20,13 @@ const EditBlog = () => {
         } else {
             navigate('/')
         }
-    }, [blogId, navigate])
+    }, [id, navigate])
 
 
     return blog ? (
         <div className='py-8'>
             <Container>
-                <BlogForm blog={blog}/>
+                <BlogForm defaultValues={blog}/>
             </Container>
         </div>
     ) : null

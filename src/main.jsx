@@ -6,7 +6,7 @@ import { ProtectedRoute } from './components'
 import { store } from './app/Store.js'
 import './index.css'
 import App from './App.jsx'
-import { Home, Login, Signup, CreateBlog, EditBlog, BlogPage } from './pages'
+import { Home, Login, Signup, CreateBlog, EditBlog, BlogPage, Profile, NotFound } from './pages'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,7 +38,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="/editblog/:blogId"
+        path="/editblog/:id"
         element={
           <ProtectedRoute authentication>
             {" "}
@@ -47,7 +47,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="/blog/:blogId"
+        path="/blog/:id"
         element={
           <ProtectedRoute authentication>
             {" "}
@@ -55,6 +55,16 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute authentication>
+            {" "}
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 )

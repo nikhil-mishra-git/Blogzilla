@@ -10,6 +10,9 @@ import BlogForm from './BlogForm'
 import ProtectedRoute from './AuthLayout'
 import Loader from './Loading'
 import LogoutButton from './LogoutButton'
+import Dashboard from './Dashboard'
+import ProfileSection from './ProfileSection'
+import Sidebar from './Sidebar'
 
 export {
     Container,
@@ -23,5 +26,8 @@ export {
     BlogForm,
     ProtectedRoute,
     Loader,
-    LogoutButton
+    LogoutButton,
+    Dashboard,
+    ProfileSection,
+    Sidebar
 }

@@ -15,7 +15,7 @@ const App = () => {
       try {
         const currUserData = await authService.getUser();
         if (currUserData) {
-          dispatch(authLogin(currUserData));
+          dispatch(authLogin({userData:currUserData}));
         }
       } catch (error) {
         console.log("User not logged in or session expired");

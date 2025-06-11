@@ -5,7 +5,7 @@ import { Container, Logo } from './index'
 
 const Footer = () => {
     return (
-        <footer className="bg-black text-white py-10 border-t border-gray-800">
+        <footer className="bg-black text-white py-6 border-t border-gray-800 mt-6">
             <Container>
                 <div className="px-4 flex flex-col md:flex-row justify-between items-center gap-10">
 
@@ -17,7 +17,7 @@ const Footer = () => {
                     {/* Center: Navigation Links */}
                     <div className="flex flex-wrap justify-center gap-6 text-sm font-medium text-gray-400 text-center md:text-left">
                         <Link to="/" className="hover:text-white transition">Home</Link>
-                        <Link to="/write" className="hover:text-white transition">Write</Link>
+                        <Link to="/writeblog" className="hover:text-white transition">Write</Link>
                         <Link to="/profile" className="hover:text-white transition">Profile</Link>
                         <Link to="/about" className="hover:text-white transition">About</Link>
                         <Link to="/contact" className="hover:text-white transition">Contact</Link>
@@ -38,7 +38,7 @@ const Footer = () => {
                 </div>
 
                 {/* Bottom Line */}
-                <div className="mt-6 text-center text-xs text-gray-500">
+                <div className="text-center text-xs text-gray-500">
                     © {new Date().getFullYear()} Blogzilla — Built by Nikhil Mishra
                 </div>
             </Container>

@@ -3,7 +3,7 @@ import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Input } from './index';
 import { Link, useNavigate } from "react-router-dom";
-import { login as authLogin } from '../features/authSlice'; 
+import { login as authLogin } from '../features/authSlice';
 import authService from "../services/authService";
 import { useDispatch } from "react-redux";
 
@@ -23,12 +23,13 @@ const Login = () => {
             if (userSession) {
                 const currUserData = await authService.getUser();
                 if (currUserData) {
-                    dispatch(authLogin(currUserData));
+                    dispatch(authLogin({ userData: currUserData }));
                     navigate("/");
                 }
             }
         } catch (error) {
-            setError(error.message);
+            console.error("Error while GetUser Data :: ", error);
+            throw error.message;
         } finally {
             setLoading(false);
         }

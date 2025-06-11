@@ -15,7 +15,7 @@ export class BlogService {
         this.bucket = new Storage(this.client)
     }
 
-    async createBlog({ title, content, coverImage, userId }) {
+    async createBlog({ title, content, coverImage, userId, author }) {
         try {
 
             const blogCreated = await this.databases.createDocument(
@@ -26,7 +26,8 @@ export class BlogService {
                     title,
                     content,
                     coverImage,
-                    userId
+                    userId,
+                    author
                 }
             )
 
@@ -81,13 +82,11 @@ export class BlogService {
     async getBlog(blogID) {
         try {
 
-            const getBlog = await this.databases.getDocument(
+            return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 blogID
             )
-
-            return getBlog ? getBlog : null
 
         } catch (error) {
             console.error("Appwrite service :: Get Blog :: error", error);
@@ -100,7 +99,8 @@ export class BlogService {
 
             const getAllBlog = await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId
+                conf.appwriteCollectionId,
+                [Query.orderDesc('$createdAt')]
             )
 
             return getAllBlog ? getAllBlog : null
@@ -137,7 +137,7 @@ export class BlogService {
         }
     }
 
-    async filePreview(fileID) {
+    filePreview(fileID) {
         try {
             return this.bucket.getFilePreview(conf.appwriteBucketId, fileID);
         } catch (error) {

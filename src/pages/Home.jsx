@@ -43,8 +43,8 @@ const Home = () => {
 
     return (
         <Container className="py-8">
-            <h1 className="text-3xl font-bold text-center mb-8">Latest Blog Posts</h1>
-            
+            <h1 className="text-3xl font-bold text-center my-8">Latest Blog Posts</h1>
+
             {blogs.length === 0 ? (
                 <div className="text-center py-12">
                     <p className="text-gray-500 text-lg">No blogs found. Be the first to create one!</p>
@@ -52,15 +52,7 @@ const Home = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {blogs.map((blog) => (
-                        <BlogCard 
-                            key={blog.$id || blog.id}
-                            title={blog.title}
-                            content={blog.content}
-                            author={blog.author || 'Anonymous'}
-                            date={blog.createdAt || new Date().toISOString()}
-                            id={blog.$id || blog.id}
-                            image={blog.image}
-                        />
+                        <BlogCard key={blog.$id} {...blog} />
                     ))}
                 </div>
             )}

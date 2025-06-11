@@ -4,6 +4,9 @@ import Signup from './Signup'
 import CreateBlog from './CreateBlog'
 import EditBlog from './EditBlog'
 import BlogPage from './BlogPage'
+import Profile from './Profile'
+import NotFound from './Notfound'
+import AllBlog from './AllBlog'
 
 export {
     Home,
@@ -11,5 +14,8 @@ export {
     Signup,
     CreateBlog,
     EditBlog,
-    BlogPage
+    BlogPage,
+    Profile,
+    NotFound,
+    AllBlog
 }
