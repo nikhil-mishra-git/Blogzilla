@@ -111,6 +111,21 @@ export class BlogService {
         }
     }
 
+    async getUserBlogs(userID) {
+        try {
+            const response = await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                [Query.equal("userId", userID)]
+            );
+            return response.documents;
+        } catch (error) {
+            console.error("Error fetching user blogs:", error);
+            throw error;
+        }
+    };
+
+
     // File Related
 
     async uploadFile(file) {
@@ -139,7 +154,10 @@ export class BlogService {
 
     filePreview(fileID) {
         try {
-            return this.bucket.getFilePreview(conf.appwriteBucketId, fileID);
+            return this.bucket.getFileView(
+                conf.appwriteBucketId,
+                fileID,
+            )
         } catch (error) {
             console.log("Appwrite service :: filePreview :: error", error);
             return null;

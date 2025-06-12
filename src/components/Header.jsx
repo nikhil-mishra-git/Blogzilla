@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Logo, LogoutButton } from './index'
+import { Container, Logo } from './index'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { FaHome, FaPen, FaSearch, FaSignInAlt, FaUser, FaUserPlus } from 'react-icons/fa'
@@ -63,7 +63,7 @@ const Header = () => {
                             <input
                                 type="text"
                                 placeholder="Search"
-                                className="w-full bg-gray-100 text-sm px-10 py-3 rounded-full focus:outline-none"
+                                className="w-full bg-gray-200/80 text-sm px-10 py-3 rounded-full focus:outline-none"
                             />
                         </div>
                     </div>
@@ -84,8 +84,6 @@ const Header = () => {
                                 </NavLink>
                             )
                         ))}
-
-                        {authStatus && <LogoutButton />}
 
                     </div>
 

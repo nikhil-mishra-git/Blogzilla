@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import blogServices from "../services/blogService";
-import { Container } from "../components";
-import { FaArrowLeft } from "react-icons/fa";
+import { Container, Notification, Loader } from "../components";
+import { FaArrowLeft, FaEdit, FaTrash } from "react-icons/fa";
+
 
 const BlogPage = () => {
   const { id } = useParams();
@@ -30,7 +31,10 @@ const BlogPage = () => {
       const deleted = await blogServices.deleteBlog(post.$id);
       if (deleted) {
         await blogServices.deleteFile(post.coverImage);
+        Notification.success("Blog deleted successfully!");
         navigate("/");
+      } else {
+        Notification.error("Failed to delete the blog.");
       }
     }
   };
@@ -49,24 +53,24 @@ const BlogPage = () => {
       </div>
 
       {post ? (
-        <div className="max-w-4xl mx-auto bg-white shadow-md rounded-xl overflow-hidden">
+        <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
           {/* Banner */}
           <img
             src={blogServices.filePreview(post.coverImage)}
             alt="Blog Cover"
-            className="w-full h-64 sm:h-72 object-cover"
+            className="w-full h-full object-cover"
           />
 
           {/* Author Info */}
           <div className="bg-gray-100 px-6 py-3 flex justify-between text-sm text-gray-700 font-medium">
             <span>By : <span className="font-semibold">{post.author}</span></span>
-            <span>Publish Date : {new Date(post.$createdAt).toLocaleDateString()}</span>
+            <span>Publish Date : {new Date(post.$createdAt).toLocaleDateString('en-IN')}</span>
           </div>
 
           {/* Post Content */}
           <div className="px-6 py-8 space-y-6">
-            <h1 className="text-3xl font-bold text-gray-800">{post.title}</h1>
-            <p className="text-base leading-relaxed text-gray-700 whitespace-pre-line">
+            <h1 className="text-3xl font-bold text-zinc-800">{post.title}</h1>
+            <p className="text-lg leading-relaxed text-zinc-800 whitespace-pre-line">
               {post.content}
             </p>
           </div>
@@ -74,24 +78,29 @@ const BlogPage = () => {
           {/* Action Buttons */}
           {isAuthor && (
             <div className="flex border-t border-gray-200">
+
               <Link
                 to={`/editblog/${post.$id}`}
-                className="w-1/2 text-center py-4 cursor-pointer text-sm font-semibold text-blue-800 hover:bg-blue-200 transition"
+                className="w-1/2 flex items-center justify-center py-4 cursor-pointer text-l font-semibold text-blue-800 hover:bg-blue-500 hover:text-white transition"
               >
-                ✏️ Edit Post
+                <FaEdit size={20} className="mr-2" />
+                Edit Post
               </Link>
+
               <button
                 onClick={handleDelete}
-                className="w-1/2 text-center py-4 cursor-pointer text-sm font-semibold text-red-600 hover:bg-red-300 transition"
+                className="w-1/2 flex items-center justify-center py-4 cursor-pointer text-l font-semibold text-red-600 hover:bg-red-500 hover:text-white transition"
               >
-                🗑️ Delete Post
+                <FaTrash size={20} className="mr-2" />
+                Delete Post
               </button>
             </div>
           )}
+
         </div>
       ) : (
         <div className="h-[60vh] flex items-center justify-center text-lg text-gray-500">
-          Loading post...
+          <Loader message="Loading Blog.." />
         </div>
       )}
     </Container>

@@ -10,9 +10,11 @@ import BlogForm from './BlogForm'
 import ProtectedRoute from './AuthLayout'
 import Loader from './Loading'
 import LogoutButton from './LogoutButton'
-import Dashboard from './Dashboard'
-import ProfileSection from './ProfileSection'
-import Sidebar from './Sidebar'
+import HeroBanner from './HeroBanner'
+import ProfileDetail from './profile/ProfileDetail'
+import MyBlogs from './profile/MyBlogs'
+import ProfileLayout from './profile/ProfileLayout'
+import Notification from './Notification'
 
 export {
     Container,
@@ -27,7 +29,9 @@ export {
     ProtectedRoute,
     Loader,
     LogoutButton,
-    Dashboard,
-    ProfileSection,
-    Sidebar
+    HeroBanner,
+    ProfileDetail,
+    MyBlogs,
+    ProfileLayout,
+    Notification
 }

@@ -6,7 +6,6 @@ import EditBlog from './EditBlog'
 import BlogPage from './BlogPage'
 import Profile from './Profile'
 import NotFound from './Notfound'
-import AllBlog from './AllBlog'
 
 export {
     Home,
@@ -16,6 +15,5 @@ export {
     EditBlog,
     BlogPage,
     Profile,
-    NotFound,
-    AllBlog
+    NotFound
 }

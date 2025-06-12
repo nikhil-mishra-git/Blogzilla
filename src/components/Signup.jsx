@@ -7,9 +7,10 @@ import { login as authLogin } from '../features/authSlice';
 import authService from "../services/authService";
 import { useDispatch } from "react-redux";
 import { FcGoogle } from "react-icons/fc";
+import Notification from '../components/Notification';
 
 const Signup = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -22,29 +23,33 @@ const Signup = () => {
         setError("");
         setLoading(true);
         try {
-            if (!data.email || !data.password || !data.name) {
-                throw new Error("All fields are required");
-            }
             const userData = await authService.createUser(data);
             if (userData) {
                 const currUserData = await authService.getUser();
-                if (currUserData) dispatch(authLogin({userData:currUserData}));
+                if (currUserData) dispatch(authLogin({ userData: currUserData }));
                 navigate("/");
+                Notification.success("Signup successful!");
             }
         } catch (error) {
             setError(error.message);
+            Notification.error(error.message);
         } finally {
             setLoading(false);
         }
+    };
+
+    const onError = (errors) => {
+        if (errors.name) Notification.error(errors.name.message);
+        else if (errors.email) Notification.error(errors.email.message);
+        else if (errors.password) Notification.error(errors.password.message);
     };
 
     return (
         <section className="flex items-start justify-center px-4">
             <div className="bg-white shadow-xl rounded-xl my-16 p-8 w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Create an Account</h2>
-                {error && <p className="text-red-600 my-4 text-center">{error}</p>}
 
-                <form onSubmit={handleSubmit(onSignupSubmit)} className="space-y-5">
+                <form onSubmit={handleSubmit(onSignupSubmit, onError)} className="space-y-5">
                     <Input
                         icon={FaUser}
                         name="name"

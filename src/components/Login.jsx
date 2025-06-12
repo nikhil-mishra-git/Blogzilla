@@ -6,17 +6,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { login as authLogin } from '../features/authSlice';
 import authService from "../services/authService";
 import { useDispatch } from "react-redux";
+import Notification from '../components/Notification';
 
 const Login = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    // Called on successful validation
     const onLoginSubmit = async (data) => {
-        setError('');
         setLoading(true);
         try {
             const userSession = await authService.loginUser(data);
@@ -24,41 +24,46 @@ const Login = () => {
                 const currUserData = await authService.getUser();
                 if (currUserData) {
                     dispatch(authLogin({ userData: currUserData }));
+                    Notification.success("Logged in successfully!");
                     navigate("/");
                 }
             }
         } catch (error) {
             console.error("Error while GetUser Data :: ", error);
-            throw error.message;
+            Notification.error(error.message || "Login failed. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
+    // Called on validation error
+    const onError = (errors) => {
+        if (errors.email) {
+            Notification.error(errors.email.message || "Email is required");
+        }
+        if (errors.password) {
+            Notification.error(errors.password.message || "Password is required");
+        }
+    };
+
     return (
-        <div className="flex items-center justify-center px-4">
+        <div className="flex items-center justify-center px-4 min-h-screen bg-gray-50">
             <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full">
                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-900">
                     Login to Blogzilla
                 </h2>
 
-                {/* Error Message */}
-                {error && (
-                    <p className="text-red-500 text-sm text-center mb-2">{error}</p>
-                )}
-
-                <form onSubmit={handleSubmit(onLoginSubmit)} className="space-y-4">
+                <form onSubmit={handleSubmit(onLoginSubmit, onError)} className="space-y-4">
                     <Input
                         icon={FaEnvelope}
                         type="email"
-                        name="email"
                         placeholder="Email"
                         autoComplete="email"
                         {...register("email", {
-                            required: true,
-                            validate: {
-                                matchPattern: (value) =>
-                                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || "Invalid email address"
+                            required: "Email is required",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Invalid email address",
                             }
                         })}
                     />
@@ -66,12 +71,14 @@ const Login = () => {
                     <Input
                         icon={FaLock}
                         type={showPassword ? "text" : "password"}
-                        name="password"
                         placeholder="Password"
                         autoComplete="current-password"
                         {...register("password", {
-                            required: true,
-                            message: "Invalid Password"
+                            required: "Password is required",
+                            minLength: {
+                                value: 8,
+                                message: "Password must be at least 8 characters"
+                            }
                         })}
                         rightIcon={showPassword ? FaEye : FaEyeSlash}
                         onRightIconClick={() => setShowPassword(!showPassword)}
@@ -99,7 +106,7 @@ const Login = () => {
 
                 <p className="mt-6 text-center text-sm text-gray-600">
                     Don't have an account?{" "}
-                    <Link to="/register" className="text-black font-semibold hover:underline">
+                    <Link to="/signup" className="text-black font-semibold hover:underline">
                         Sign up
                     </Link>
                 </p>

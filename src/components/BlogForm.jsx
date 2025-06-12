@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import blogServices from '../services/blogService';
-import Input from './Input';
+import { Container, Input, Notification, Loader } from '../components'
 import { FaImage } from 'react-icons/fa';
 
 const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
@@ -17,7 +17,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
             title: defaultValues?.title || '',
             content: defaultValues?.content || '',
             image: null,
-            postId: defaultValues?.$id || '', 
+            postId: defaultValues?.$id || '',
         },
     });
 
@@ -38,6 +38,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
     }, [imageFile]);
 
     const onSubmit = async (data) => {
+        const toastId = Notification.loading("Publishing your blog...");
         setUploading(true);
         setError('');
 
@@ -46,14 +47,12 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
 
             let imageId = defaultValues.coverImage || '';
 
-            // Upload new image if provided
             if (data.image && data.image.length > 0) {
                 const uploaded = await blogServices.uploadFile(data.image[0]);
                 if (!uploaded?.$id) throw new Error('Image upload failed');
 
                 imageId = uploaded.$id;
 
-                // Optionally delete old image
                 if (defaultValues.coverImage && uploaded.$id !== defaultValues.coverImage) {
                     await blogServices.deleteFile(defaultValues.coverImage);
                 }
@@ -64,7 +63,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                 content: data.content,
                 coverImage: imageId,
                 userId: userData.$id,
-                author:userData.name,
+                author: userData.name,
             };
 
             let result;
@@ -76,6 +75,13 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
 
             if (result) {
                 reset();
+                Notification.success(
+                    defaultValues?.$id
+                        ? "Blog updated successfully ✅"
+                        : "Blog published successfully 🎉",
+                    { id: toastId }
+                );
+
                 if (onSubmitSuccess) {
                     onSubmitSuccess();
                 } else {
@@ -86,6 +92,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
             }
 
         } catch (err) {
+            Notification.error(err.message || "Something went wrong ", { id: toastId });
             setError(err.message || 'Something went wrong');
         } finally {
             setUploading(false);
@@ -94,15 +101,15 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
 
     if (!userData) {
         return (
-            <section className="min-h-screen flex items-center justify-center px-4">
+            <section className="min-h-[50vh] flex items-center justify-center px-4">
                 <p className="text-lg text-gray-700">Please log in to write a blog.</p>
             </section>
         );
     }
 
     return (
-        <section className="min-h-screen px-4 py-12">
-            <div className="max-w-[1350px] mx-auto bg-white border border-gray-200 shadow-sm rounded-xl p-10">
+        <Container className="py-4">
+            <div className=" mx-auto bg-white border border-gray-200 shadow-sm rounded-xl p-10">
                 <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">
                     {defaultValues.$id ? 'Update Blog' : 'Write an Amazing Blog'}
                 </h2>
@@ -111,7 +118,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
 
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row gap-12">
                     {/* Image Upload */}
-                    <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                    <div className="w-full lg:w-1/3 flex flex-col justify-center">
                         <h3 className="text-lg font-semibold text-gray-700 mb-4">Post Image</h3>
                         <div className="border-3 border-dashed border-gray-300 bg-gray-100 rounded-xl h-[360px] flex items-center justify-center relative hover:bg-gray-200 transition">
                             <label
@@ -146,8 +153,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                     </div>
 
                     {/* Blog Info */}
-                    <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6">
-                        <h3 className="text-lg font-semibold text-gray-700 mb-1">Post Info</h3>
+                    <div className="w-full lg:w-2/3 flex flex-col justify-center space-y-6">
 
                         <div>
                             <label htmlFor="title" className="block text-sm font-medium text-gray-600 mb-2">Title</label>
@@ -155,6 +161,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                                 id="title"
                                 type="text"
                                 placeholder="Amazing Blog Title"
+                                className="w-full px-5 py-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
                                 {...register("title", { required: true })}
                             />
                             {error.title && (
@@ -168,7 +175,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                                 id="content"
                                 {...register("content", { required: true })}
                                 placeholder="Write something amazing..."
-                                className="w-full px-5 py-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black h-60 resize-none"
+                                className="w-full px-5 py-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black h-80 resize-none"
                             />
                             {error.content && (
                                 <p className="text-sm text-red-500 mt-1">Content is required</p>
@@ -185,7 +192,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                     </div>
                 </form>
             </div>
-        </section>
+        </Container>
     );
 };
 
