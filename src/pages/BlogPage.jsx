@@ -101,8 +101,8 @@ const BlogPage = () => {
 
           {/* Blog Content */}
           <div className="px-6 py-8 space-y-6">
-            <h1 className="text-3xl font-bold text-zinc-800">{post.title}</h1>
-            <p className="text-lg leading-relaxed text-zinc-800 whitespace-pre-line">
+            <h1 className="text-2xl md:text-3xl font-bold text-zinc-800">{post.title}</h1>
+            <p className="text-l md:text-lg text-justify leading-relaxed text-zinc-800 whitespace-pre-line">
               {post.content}
             </p>
           </div>

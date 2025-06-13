@@ -45,7 +45,7 @@ const MyBlogs = () => {
     }
 
     return (
-        <Container className="py-8 px-4">
+        <div className="py-8 w-full max-w-[1400px] mx-auto">
             <header className="max-w-3xl mx-auto mb-10 text-center">
                 <h1 className="text-2xl sm:text-3xl font-bold text-zinc-700">Your Blog Posts</h1>
                 <p className="text-gray-500 text-sm mt-2">Manage and edit your published blogs</p>
@@ -59,12 +59,12 @@ const MyBlogs = () => {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {blogs.map((blog) => (
+                    {[...blogs].reverse().map((blog) => (
                         <BlogCard key={blog.$id} {...blog} />
                     ))}
                 </div>
             )}
-        </Container>
+        </div>
     );
 };
 

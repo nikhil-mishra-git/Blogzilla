@@ -68,10 +68,10 @@ const Home = () => {
 
             <Container className="py-8">
                 <header className="max-w-3xl mx-auto mb-12 text-center">
-                    <h1 className="text-4xl font-extrabold text-zinc-700 my-4">
+                    <h1 className="text-3xl md:text-4xl font-extrabold text-zinc-700 my-4">
                         Latest Blog Posts
                     </h1>
-                    <p className="text-gray-600 text-l">
+                    <p className="text-gray-600 text-xs md:text-l text-center">
                         Discover fresh insights and stories from our talented authors.
                     </p>
                 </header>

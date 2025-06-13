@@ -25,7 +25,7 @@ const LogoutButton = () => {
     return (
         <button
             onClick={handleLogout}
-            className="cursor-pointer px-5 py-3 rounded-md transition bg-gray-100 text-black hover:bg-red-500 hover:text-white flex items-center gap-2"
+            className="cursor-pointer px-5 py-3 rounded-md transition bg-gray-100 hover:bg-gray-200 text-red-500 flex items-center gap-2"
         >
             <FaSignOutAlt size={14} />
             Logout

@@ -24,7 +24,6 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
 
-    // State for preview image URL
     const [previewImage, setPreviewImage] = useState('');
     const [error, setError] = useState('');
     const [uploading, setUploading] = useState(false);
@@ -32,7 +31,6 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
     // Watching file input
     const imageFile = watch('image');
 
-    // Helper function to get Appwrite file preview URL
     const getFilePreviewUrl = (fileID) => {
         try {
             return blogServices.filePreview(fileID);
@@ -42,7 +40,6 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
         }
     };
 
-    // Update previewImage when image file changes or on initial load
     useEffect(() => {
         if (imageFile && imageFile.length > 0) {
             const file = imageFile[0];
@@ -131,8 +128,8 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
 
     return (
         <Container className="py-4">
-            <div className="mx-auto bg-white border border-gray-200 shadow-sm rounded-xl p-10">
-                <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">
+            <div className="mx-auto rounded-xl">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
                     {defaultValues.$id ? 'Update Blog' : 'Write an Amazing Blog'}
                 </h2>
 
@@ -141,7 +138,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row gap-12">
                     {/* Image Upload Section */}
                     <div className="w-full lg:w-1/3 flex flex-col justify-center">
-                        <h3 className="text-lg font-semibold text-gray-700 mb-4">Post Image</h3>
+                        <h3 className="text-lg font-semibold text-gray-700 mb-4">Blog Image</h3>
                         <div className="border-3 border-dashed border-gray-300 bg-gray-100 rounded-xl h-[360px] flex items-center justify-center relative hover:bg-gray-200 transition">
                             <label
                                 htmlFor="image"
@@ -193,7 +190,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                                 id="content"
                                 {...register("content", { required: true })}
                                 placeholder="Write something amazing..."
-                                className="w-full px-5 py-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black h-80 resize-none"
+                                className="w-full px-5 py-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black h-100 md:h-80 resize-none"
                             />
                         </div>
 

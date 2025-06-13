@@ -28,10 +28,10 @@ const ProfileLayout = () => {
     const avatarUrl = `https://avatar.iran.liara.run/public/boy`;
 
     return (
-        <Container className="py-8">
+        <Container className="py-8 px-0">
             <div className="min-h-[70vh] flex flex-col lg:flex-row gap-6">
                 {/* Sidebar */}
-                <aside className="w-full lg:w-64 bg-white p-6 shadow-md rounded-lg">
+                <aside className="w-full lg:w-64 bg-white p-3 md:p-6 shadow-md rounded-lg">
                     <div className="text-center mb-6">
                         <img
                             src={avatarUrl}
@@ -65,7 +65,7 @@ const ProfileLayout = () => {
                 </aside>
 
                 {/* Main content */}
-                <main className="flex-1 p-4 lg:p-10 bg-white rounded-lg shadow-md">
+                <main className="flex-1 lg:p-10 rounded-lg">
                     <Outlet />
                 </main>
             </div>

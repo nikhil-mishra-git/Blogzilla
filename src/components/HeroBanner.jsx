@@ -16,18 +16,18 @@ const HeroBanner = ({ blog }) => {
     } = blog;
 
     return (
-        <section className="flex my-8 flex-col md:flex-row items-center gap-10 justify-between max-w-[1350px] mx-auto px-6 py-8">
+        <section className="flex my-8 flex-col-reverse md:flex-row items-center gap-10 justify-between max-w-[1350px] mx-auto px-4 py-8">
             {/* Left Side: Text Content */}
-            <div className="flex flex-col gap-5 w-full md:w-1/2 text-center md:text-left">
-                <h1 className="text-4xl font-bold text-gray-800 leading-snug">
+            <div className="flex flex-col gap-5 w-full md:w-1/2 text-left">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-800 leading-snug">
                     {title}
                 </h1>
 
-                <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-gray-600">
-                    <span>By <span className="font-semibold">{author}</span></span>
+                <div className="flex items-center justify-start gap-2 text-sm text-gray-600">
+                    <span>By : <span className="font-semibold">{author}</span></span>
                     <span>&bull;</span>
                     <span>
-                        Published on <span className="font-semibold">
+                        Published on : <span className="font-semibold">
                             {new Date($createdAt).toLocaleDateString('en-IN')}
                         </span>
                     </span>
@@ -47,11 +47,11 @@ const HeroBanner = ({ blog }) => {
             </div>
 
             {/* Right Side: Image */}
-            <div className="w-full md:w-1/2 md:mt-0 mt-8">
+            <div className="w-full md:w-1/2">
                 <img
                     src={blogServices.filePreview(coverImage).toString()}
                     alt="Blog Cover"
-                    className="w-full h-auto max-h-90 object-cover rounded-2xl"
+                    className="w-full h-55 md:h-auto max-h-90 object-cover rounded-2xl"
                 />
             </div>
         </section>
