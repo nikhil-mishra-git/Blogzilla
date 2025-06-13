@@ -58,8 +58,8 @@ export class AuthService {
         try {
             return this.account.createOAuth2Session(
                 "google",
-                "http://localhost:5173/",
-                "http://localhost:5173/login"
+                "https://blogzillaweb.vercel.app",
+                "https://blogzillaweb.vercel.app/login"
             );
         } catch (error) {
             console.error("Google OAuth login error :: ", error);
