@@ -5,7 +5,7 @@ import CreateBlog from './CreateBlog'
 import EditBlog from './EditBlog'
 import BlogPage from './BlogPage'
 import Profile from './Profile'
-import NotFound from './Notfound'
+import NotFound from './NotFound'
 
 export {
     Home,
