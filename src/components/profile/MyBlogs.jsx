@@ -5,6 +5,7 @@ import { BlogCard, Container, Loader } from '../../components';
 
 const MyBlogs = () => {
     const userData = useSelector((state) => state.auth.userData);
+
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -29,7 +30,7 @@ const MyBlogs = () => {
 
     if (loading) {
         return (
-            <div className="w-full flex justify-center items-center min-h-[60vh]">
+            <div className="w-full flex justify-center items-center min-h-[60vh] px-4">
                 <Loader message="Loading your blogs..." />
             </div>
         );
@@ -37,19 +38,17 @@ const MyBlogs = () => {
 
     if (error) {
         return (
-            <div className="w-full flex justify-center items-center min-h-[60vh]">
-                <p className="text-red-500 text-lg">{error}</p>
+            <div className="w-full flex justify-center items-center min-h-[60vh] px-4">
+                <p className="text-red-500 text-lg text-center">{error}</p>
             </div>
         );
     }
 
     return (
-        <Container className="py-8">
-            <header className="max-w-3xl mx-auto mb-12 text-center">
-                <h1 className="text-3xl font-bold text-zinc-700 my-4">Your Blog Posts</h1>
-                <p className="text-gray-600 text-base">
-                    These are all the blogs you've created under your account.
-                </p>
+        <Container className="py-8 px-4">
+            <header className="max-w-3xl mx-auto mb-10 text-center">
+                <h1 className="text-2xl sm:text-3xl font-bold text-zinc-700">Your Blog Posts</h1>
+                <p className="text-gray-500 text-sm mt-2">Manage and edit your published blogs</p>
             </header>
 
             {blogs.length === 0 ? (
@@ -59,7 +58,7 @@ const MyBlogs = () => {
                     </p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {blogs.map((blog) => (
                         <BlogCard key={blog.$id} {...blog} />
                     ))}

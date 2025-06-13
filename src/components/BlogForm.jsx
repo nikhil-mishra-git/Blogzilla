@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import blogServices from '../services/blogService';
-import { Container, Input, Notification, Loader } from '../components'
+import { Container, Input, Notification } from '../components';
 import { FaImage } from 'react-icons/fa';
 
 const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
@@ -11,7 +11,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
         register,
         handleSubmit,
         watch,
-        reset
+        reset,
     } = useForm({
         defaultValues: {
             title: defaultValues?.title || '',
@@ -24,18 +24,38 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
 
-    const [previewImage, setPreviewImage] = useState(defaultValues?.coverImage || '');
+    // State for preview image URL
+    const [previewImage, setPreviewImage] = useState('');
     const [error, setError] = useState('');
     const [uploading, setUploading] = useState(false);
 
+    // Watching file input
     const imageFile = watch('image');
 
+    // Helper function to get Appwrite file preview URL
+    const getFilePreviewUrl = (fileID) => {
+        try {
+            return blogServices.filePreview(fileID);
+        } catch (err) {
+            console.error("Error getting file preview URL:", err);
+            return '';
+        }
+    };
+
+    // Update previewImage when image file changes or on initial load
     useEffect(() => {
         if (imageFile && imageFile.length > 0) {
             const file = imageFile[0];
-            setPreviewImage(URL.createObjectURL(file));
+            const objectUrl = URL.createObjectURL(file);
+            setPreviewImage(objectUrl);
+            return () => URL.revokeObjectURL(objectUrl);
+        } else if (defaultValues.coverImage) {
+            const url = getFilePreviewUrl(defaultValues.coverImage);
+            setPreviewImage(url);
+        } else {
+            setPreviewImage('');
         }
-    }, [imageFile]);
+    }, [imageFile, defaultValues.coverImage]);
 
     const onSubmit = async (data) => {
         const toastId = Notification.loading("Publishing your blog...");
@@ -47,12 +67,14 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
 
             let imageId = defaultValues.coverImage || '';
 
+            // Upload new image if selected
             if (data.image && data.image.length > 0) {
                 const uploaded = await blogServices.uploadFile(data.image[0]);
                 if (!uploaded?.$id) throw new Error('Image upload failed');
 
                 imageId = uploaded.$id;
 
+                // Delete old image if replaced
                 if (defaultValues.coverImage && uploaded.$id !== defaultValues.coverImage) {
                     await blogServices.deleteFile(defaultValues.coverImage);
                 }
@@ -109,7 +131,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
 
     return (
         <Container className="py-4">
-            <div className=" mx-auto bg-white border border-gray-200 shadow-sm rounded-xl p-10">
+            <div className="mx-auto bg-white border border-gray-200 shadow-sm rounded-xl p-10">
                 <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">
                     {defaultValues.$id ? 'Update Blog' : 'Write an Amazing Blog'}
                 </h2>
@@ -117,7 +139,7 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                 {error && <p className="text-red-600 text-center mb-6">{error}</p>}
 
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:flex-row gap-12">
-                    {/* Image Upload */}
+                    {/* Image Upload Section */}
                     <div className="w-full lg:w-1/3 flex flex-col justify-center">
                         <h3 className="text-lg font-semibold text-gray-700 mb-4">Post Image</h3>
                         <div className="border-3 border-dashed border-gray-300 bg-gray-100 rounded-xl h-[360px] flex items-center justify-center relative hover:bg-gray-200 transition">
@@ -152,9 +174,8 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                         )}
                     </div>
 
-                    {/* Blog Info */}
+                    {/* Blog Content Section */}
                     <div className="w-full lg:w-2/3 flex flex-col justify-center space-y-6">
-
                         <div>
                             <label htmlFor="title" className="block text-sm font-medium text-gray-600 mb-2">Title</label>
                             <Input
@@ -164,9 +185,6 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                                 className="w-full px-5 py-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
                                 {...register("title", { required: true })}
                             />
-                            {error.title && (
-                                <p className="text-sm text-red-500 mt-1">Title is required</p>
-                            )}
                         </div>
 
                         <div>
@@ -177,9 +195,6 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
                                 placeholder="Write something amazing..."
                                 className="w-full px-5 py-3 rounded-md border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black h-80 resize-none"
                             />
-                            {error.content && (
-                                <p className="text-sm text-red-500 mt-1">Content is required</p>
-                            )}
                         </div>
 
                         <button

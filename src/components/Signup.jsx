@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Input } from './index';
@@ -23,16 +23,18 @@ const Signup = () => {
         setError("");
         setLoading(true);
         try {
-            const userData = await authService.createUser(data);
-            if (userData) {
-                const currUserData = await authService.getUser();
-                if (currUserData) dispatch(authLogin({ userData: currUserData }));
-                navigate("/");
-                Notification.success("Signup successful!");
+            const session = await authService.createUser(data); 
+            if (session) {
+                const user = await authService.getUser(); 
+                if (user) {
+                    dispatch(authLogin({ userData: user }));
+                    Notification.success("Signup successful!");
+                    navigate("/");
+                }
             }
         } catch (error) {
             setError(error.message);
-            Notification.error(error.message);
+            Notification.error(error.message || "Signup failed");
         } finally {
             setLoading(false);
         }
@@ -40,14 +42,41 @@ const Signup = () => {
 
     const onError = (errors) => {
         if (errors.name) Notification.error(errors.name.message);
-        else if (errors.email) Notification.error(errors.email.message);
-        else if (errors.password) Notification.error(errors.password.message);
+        if (errors.email) Notification.error(errors.email.message);
+        if (errors.password) Notification.error(errors.password.message);
     };
 
+    const handleGoogleSignup = () => {
+        try {
+            authService.loginWithGoogle(); 
+        } catch (error) {
+            Notification.error("Google signup failed");
+        }
+    };
+
+    useEffect(() => {
+        const check = async () => {
+            try {
+                const user = await authService.getUser();
+                if (user) {
+                    dispatch(authLogin({ userData: user }));
+                    navigate("/");
+                    Notification.success("Logged in with Google");
+                }
+            } catch (err) {
+                console.log(err);
+                
+            }
+        };
+        check();
+    }, []);
+
     return (
-        <section className="flex items-start justify-center px-4">
+        <section className="flex items-start justify-center px-4 min-h-[70vh]">
             <div className="bg-white shadow-xl rounded-xl my-16 p-8 w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Create an Account</h2>
+                <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
+                    Create an Account
+                </h2>
 
                 <form onSubmit={handleSubmit(onSignupSubmit, onError)} className="space-y-5">
                     <Input
@@ -100,13 +129,17 @@ const Signup = () => {
 
                 <div className="my-4 text-center text-gray-500">OR</div>
 
-                <button className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition">
+                {/* Google button */}
+                <button
+                    onClick={handleGoogleSignup}
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition"
+                >
                     <FcGoogle size={20} />
                     Continue with Google
                 </button>
 
                 <p className="mt-4 text-sm text-center text-gray-600">
-                    Already have an account?{' '}
+                    Already have an account?{" "}
                     <Link to="/login" className="text-black font-medium hover:underline">
                         Sign In
                     </Link>

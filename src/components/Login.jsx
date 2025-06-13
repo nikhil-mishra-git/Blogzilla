@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Input } from './index';
@@ -15,7 +15,23 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // Called on successful validation
+    // Check if Appwrite session exists 
+    useEffect(() => {
+        const checkOAuthLogin = async () => {
+            try {
+                const userData = await authService.getUser();
+                if (userData) {
+                    dispatch(authLogin({ userData: userData }));
+                    navigate("/");
+                }
+            } catch (error) {
+                console.log("No active session or not logged in");
+            }
+        };
+        checkOAuthLogin();
+    }, []);
+
+    // Email-Password login
     const onLoginSubmit = async (data) => {
         setLoading(true);
         try {
@@ -36,7 +52,7 @@ const Login = () => {
         }
     };
 
-    // Called on validation error
+    // Validation error
     const onError = (errors) => {
         if (errors.email) {
             Notification.error(errors.email.message || "Email is required");
@@ -46,8 +62,23 @@ const Login = () => {
         }
     };
 
+    // Google OAuth login 
+    const handleGoogleLogin = async () => {
+        try {
+            const userData = await authService.loginWithGoogle();
+            if (userData) {
+                dispatch(authLogin({ userData: userData }));
+                Notification.success("Logged in successfully!");
+                navigate('/');
+            }
+        } catch (error) {
+            Notification.error("Google login failed");
+            console.error("Google OAuth error:", error);
+        }
+    }
+
     return (
-        <div className="flex items-center justify-center px-4 min-h-screen bg-gray-50">
+        <div className="flex items-center justify-center px-4 min-h-[70vh]">
             <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full">
                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-900">
                     Login to Blogzilla
@@ -95,7 +126,10 @@ const Login = () => {
 
                 <p className="my-4 text-sm text-center text-gray-400">OR</p>
 
-                <button className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition">
+                <button
+                    onClick={handleGoogleLogin}
+                    className="w-full flex items-center justify-center gap-2 py-3 cursor-pointer rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition"
+                >
                     <img
                         src="https://www.svgrepo.com/show/475656/google-color.svg"
                         alt="Google"

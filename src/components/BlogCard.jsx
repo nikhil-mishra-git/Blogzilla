@@ -3,36 +3,34 @@ import blogServices from '../services/blogService';
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 
-const BlogCard = ({ $id, title, content, author, $createdAt, coverImage }) => {
+const BlogCard = ({ $id, title, content, author, $createdAt, coverImage, setSearchQuery }) => {
   return (
-    <Link to={`/blog/${$id}`}>
+    <Link
+      to={`/blog/${$id}`}
+      onClick={() => setSearchQuery && setSearchQuery('')}
+    >
       <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition duration-300 overflow-hidden flex flex-col max-w-sm mx-auto
                       h-[420px]">
 
-        {/* Cover Image */}
+
         <img
           src={(blogServices.filePreview(coverImage))}
           alt="Blog Banner"
           className="w-full h-48 object-cover"
         />
 
-        {/* Content */}
         <div className="p-6 flex flex-col flex-grow">
 
-          {/* Title */}
           <h2
             className="text-lg font-bold text-gray-900 mb-2 leading-tight line-clamp-1 text-left"
           >
             {title}
           </h2>
 
-
-          {/* Description */}
           <p className="text-gray-700 text-l text-justify mt-2 mb-6 line-clamp-3 flex-grow">
             {content}
           </p>
 
-          {/* Footer: Author and Button */}
           <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-200">
             <span className="text-sm font-semibold text-gray-700">
               {author} • {new Date($createdAt).toLocaleDateString('en-IN')}

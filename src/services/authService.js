@@ -54,6 +54,19 @@ export class AuthService {
         return null;
     }
 
+    async loginWithGoogle() {
+        try {
+            return this.account.createOAuth2Session(
+                "google",
+                "http://localhost:5173/",
+                "http://localhost:5173/login"
+            );
+        } catch (error) {
+            console.error("Google OAuth login error :: ", error);
+            throw error;
+        }
+    }
+
 }
 
 const authService = new AuthService();

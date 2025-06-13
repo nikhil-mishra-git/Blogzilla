@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, BlogCard, Loader, HeroBanner } from '../components'
+import { Container, BlogCard, Loader, HeroBanner, BlogCardSkeleton, HeroBannerSkeleton } from '../components'
 import blogServices from '../services/blogService'
 
 
@@ -35,11 +35,22 @@ const Home = () => {
 
     if (loading) {
         return (
-            <div className="w-full flex justify-center items-center min-h-[60vh]">
-                <Loader message="Loading Home Page..." />
+            <div className="w-full min-h-[80vh] px-6 py-10">
+                <HeroBannerSkeleton />
+                <div className="text-center text-gray-500 text-lg mb-6">
+                    Fetching latest blog posts...
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <BlogCardSkeleton key={index} />
+                    ))}
+                </div>
             </div>
         );
     }
+
+
+
 
     if (error) {
         return (

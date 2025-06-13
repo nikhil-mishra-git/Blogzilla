@@ -26,11 +26,12 @@ const EditBlog = () => {
     return blog ? (
         <div className='py-8'>
             <Container>
-                <BlogForm defaultValues={blog}/>
+                <BlogForm defaultValues={{ ...blog }} />
             </Container>
         </div>
-    ) : null
-    
+    ) : null;
+
+
 }
 
 export default EditBlog

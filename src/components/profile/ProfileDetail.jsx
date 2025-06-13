@@ -24,9 +24,7 @@ const ProfileDetail = () => {
           alt="User Avatar"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-              user?.name || ""
-            )}&background=f6f9fc&color=555&size=128`;
+            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "")}&background=f6f9fc&color=555&size=128`;
           }}
           className="w-full h-full object-cover"
         />
