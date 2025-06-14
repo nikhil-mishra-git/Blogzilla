@@ -62,6 +62,10 @@ const BlogForm = ({ defaultValues = {}, onSubmitSuccess }) => {
         try {
             if (!userData?.$id) throw new Error('You must be logged in to submit a blog.');
 
+            if (!defaultValues.coverImage && (!data.image || data.image.length === 0)) {
+                throw new Error("Please upload a blog image.");
+            }
+
             let imageId = defaultValues.coverImage || '';
 
             // Upload new image if selected

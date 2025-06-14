@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import blogService from '../services/blogService'
 import { BlogCard, Container, BlogCardSkeleton } from '../components'
+import { useSelector, useDispatch } from 'react-redux'
+import { clearSearchQuery } from '../features/searchSlice'
+import { useLocation } from 'react-router-dom'
 
-const SearchResult = ({ query, setSearchQuery  }) => {
+const SearchResult = () => {
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const query = useSelector((state) => state.search.query)
+
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
+
 
   useEffect(() => {
     const fetch = async () => {
@@ -16,6 +24,7 @@ const SearchResult = ({ query, setSearchQuery  }) => {
         const filtered = blogs.filter(blog =>
           blog.title.toLowerCase().includes(query.toLowerCase())
         )
+
         setResults(filtered)
       } catch (err) {
         console.error("Search error:", err)
@@ -35,7 +44,7 @@ const SearchResult = ({ query, setSearchQuery  }) => {
     return (
       <Container className="py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {results.map((_, index) => (
+          {Array.from({ length: 6 }).map((_, index) => (
             <BlogCardSkeleton key={index} />
           ))}
         </div>
@@ -55,7 +64,7 @@ const SearchResult = ({ query, setSearchQuery  }) => {
     <Container className="py-12">
       <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {results.map(blog => (
-          <BlogCard key={blog.$id} {...blog} setSearchQuery={setSearchQuery} />
+          <BlogCard key={blog.$id} {...blog} />
         ))}
       </div>
     </Container>

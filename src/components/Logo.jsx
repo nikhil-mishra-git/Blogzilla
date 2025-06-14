@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/Blogzilla Logo.png';
 
-const Logo = ({ height = 36 }) => {
+const Logo = () => {
     return (
         <Link to="/">
             <img
                 src={logo}
                 alt="Blogzilla"
-                className={`h-auto w-[150px] md:h-36 md:w-auto object-contain`}
+                className={`h-14 w-auto object-contain`}
             />
         </Link>
     );

@@ -16,10 +16,10 @@ const HeroBanner = ({ blog }) => {
     } = blog;
 
     return (
-        <section className="flex my-8 flex-col-reverse md:flex-row items-center gap-10 justify-between max-w-[1350px] mx-auto px-4 py-8">
+        <section className="flex my-8 flex-col-reverse md:flex-row items-center gap-10 justify-between max-w-[1400px] mx-auto px-4 pt-0 md:py-8">
             {/* Left Side: Text Content */}
             <div className="flex flex-col gap-5 w-full md:w-1/2 text-left">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-800 leading-snug">
+                <h1 className="text-2xl md:text-4xl font-bold text-gray-800 leading-snug">
                     {title}
                 </h1>
 
@@ -33,7 +33,7 @@ const HeroBanner = ({ blog }) => {
                     </span>
                 </div>
 
-                <p className="text-gray-700 mt-4 text-justify line-clamp-4">
+                <p className="text-gray-700 mt-2 md:mt-4 text-justify line-clamp-4">
                     {content}
                 </p>
 
