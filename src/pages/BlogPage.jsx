@@ -3,7 +3,14 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import blogServices from "../services/blogService";
 import { Container, Notification, Loader } from "../components";
-import { FaArrowLeft, FaEdit, FaTrash, FaEllipsisV } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEdit,
+  FaTrash,
+  FaEllipsisV,
+  FaBookmark,
+  FaRegBookmark,
+} from "react-icons/fa";
 
 const BlogPage = () => {
   const { id } = useParams();
@@ -11,6 +18,7 @@ const BlogPage = () => {
   const userData = useSelector((state) => state.auth.userData);
   const [post, setPost] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const isAuthor = post && userData ? post.userId === userData.$id : false;
 
@@ -25,6 +33,16 @@ const BlogPage = () => {
     }
   }, [id, navigate]);
 
+  useEffect(() => {
+    const checkSaved = async () => {
+      if (userData && post?.$id) {
+        const saved = await blogServices.isBlogSaved(userData.$id, post.$id);
+        setIsSaved(saved);
+      }
+    };
+    checkSaved();
+  }, [userData, post]);
+
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this post?");
     if (confirmDelete) {
@@ -36,6 +54,18 @@ const BlogPage = () => {
       } else {
         Notification.error("Failed to delete the blog.");
       }
+    }
+  };
+
+  const toggleSave = async () => {
+    if (!userData) {
+      return Notification.error("Login to save this blog.");
+    }
+
+    const success = await blogServices.toggleSaveBlog(userData.$id, post.$id);
+    if (success) {
+      setIsSaved(!isSaved);
+      Notification.success(isSaved ? "Removed from saved" : "Blog saved successfully 🎉");
     }
   };
 
@@ -64,40 +94,53 @@ const BlogPage = () => {
             <span>
               By: <span className="font-semibold">{post.author}</span>
             </span>
-            <span>
-              {new Date(post.$createdAt).toLocaleDateString("en-IN")}
-            </span>
+            <span>{new Date(post.$createdAt).toLocaleDateString("en-IN")}</span>
           </div>
 
-          {/* Menu button */}
-          {isAuthor && (
-            <div className="absolute top-4 right-4 z-10 ">
+          {/* Buttons (top-right) */}
+          <div className="absolute top-4 right-4 z-10 flex items-center space-x-2">
+            {!isAuthor && userData && (
               <button
-                onClick={() => setShowMenu(!showMenu)}
+                onClick={toggleSave}
                 className="p-2 rounded-full bg-white shadow hover:bg-gray-100 transition cursor-pointer"
               >
-                <FaEllipsisV />
+                {isSaved ? (
+                  <FaBookmark className="text-blue-600" />
+                ) : (
+                  <FaRegBookmark className="text-gray-600" />
+                )}
               </button>
-              {showMenu && (
-                <div className="mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md absolute right-0 z-20">
-                  <Link
-                    to={`/editblog/${post.$id}`}
-                    className="flex items-center gap-2 px-4 py-3 text-sm hover:bg-gray-100 text-blue-700"
-                  >
-                    <FaEdit />
-                    Edit
-                  </Link>
-                  <button
-                    onClick={handleDelete}
-                    className="flex w-full items-center gap-2 px-4 py-3 text-sm hover:bg-gray-100 text-red-600"
-                  >
-                    <FaTrash />
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+            )}
+
+            {isAuthor && (
+              <div className="relative">
+                <button
+                  onClick={() => setShowMenu(!showMenu)}
+                  className="p-2 rounded-full bg-white shadow hover:bg-gray-100 transition cursor-pointer"
+                >
+                  <FaEllipsisV />
+                </button>
+                {showMenu && (
+                  <div className="mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md absolute right-0 z-20">
+                    <Link
+                      to={`/editblog/${post.$id}`}
+                      className="flex items-center gap-2 px-4 py-3 text-sm hover:bg-gray-100 text-blue-700"
+                    >
+                      <FaEdit />
+                      Edit
+                    </Link>
+                    <button
+                      onClick={handleDelete}
+                      className="flex w-full items-center gap-2 px-4 py-3 text-sm hover:bg-gray-100 text-red-600"
+                    >
+                      <FaTrash />
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Blog Content */}
           <div className="px-6 py-8 space-y-6">

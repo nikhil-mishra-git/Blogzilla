@@ -33,7 +33,7 @@ const HeroBanner = ({ blog }) => {
                     </span>
                 </div>
 
-                <p className="text-gray-700 mt-2 md:mt-4 text-justify line-clamp-4">
+                <p className="text-gray-700 text-lg mt-2 md:mt-4 text-justify line-clamp-4">
                     {content}
                 </p>
 

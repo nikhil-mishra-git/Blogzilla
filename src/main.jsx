@@ -6,7 +6,7 @@ import { ProtectedRoute } from './components'
 import { store } from './app/Store.js'
 import './index.css'
 import App from './App.jsx'
-import { ProfileDetail, MyBlogs } from './components'
+import { ProfileDetail, MyBlogs,SavedBlogs } from './components'
 import { Home, Login, Signup, CreateBlog, EditBlog, BlogPage, Profile, NotFound } from './pages'
 
 const router = createBrowserRouter(
@@ -67,6 +67,7 @@ const router = createBrowserRouter(
       >
         <Route index element={<ProfileDetail />} />
         <Route path="myblogs" element={<MyBlogs />} />
+        <Route path="savedblogs" element={<SavedBlogs />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

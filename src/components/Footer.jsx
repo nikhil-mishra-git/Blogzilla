@@ -7,11 +7,11 @@ const Footer = () => {
     return (
         <footer className="bg-black text-white py-6 border-t border-gray-800 mt-6">
             <Container>
-                <div className="px-4 flex flex-col md:flex-row justify-between items-center gap-10">
+                <div className="px-4 flex flex-col md:flex-row justify-between items-center gap-8">
 
                     {/* Left: Logo */}
                     <div className="flex items-center gap-3 invert">
-                        <Logo height={32} />
+                        <Logo />
                     </div>
 
                     {/* Center: Navigation Links */}
@@ -19,8 +19,8 @@ const Footer = () => {
                         <Link to="/" className="hover:text-white transition">Home</Link>
                         <Link to="/writeblog" className="hover:text-white transition">Write</Link>
                         <Link to="/profile" className="hover:text-white transition">Profile</Link>
-                        <Link to="/about" className="hover:text-white transition">About</Link>
-                        <Link to="/contact" className="hover:text-white transition">Contact</Link>
+                        <Link to="/" className="hover:text-white transition">About</Link>
+                        <Link to="/profile" className="hover:text-white transition">Contact</Link>
                     </div>
 
                     {/* Right: Social Icons */}
@@ -38,7 +38,7 @@ const Footer = () => {
                 </div>
 
                 {/* Bottom Line */}
-                <div className="text-center text-xs text-gray-500">
+                <div className="text-center my-6 text-xs text-gray-500">
                     © {new Date().getFullYear()} Blogzilla — Built by Nikhil Mishra
                 </div>
             </Container>

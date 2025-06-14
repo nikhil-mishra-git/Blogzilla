@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeroBannerSkeleton = () => {
     return (
-        <section className="flex my-8 flex-col-reverse md:flex-row items-center gap-10 justify-between max-w-[1400px] mx-auto px-4 pt-0 md:py-8 animate-pulse">
+        <section className="flex my-8 flex-col-reverse md:flex-row items-center gap-10 justify-between max-w-[1400px] mx-auto pt-0 md:py-8 animate-pulse">
 
             {/* Left Side: Text Content Skeleton */}
             <div className="flex flex-col gap-5 w-full md:w-1/2 text-left">
@@ -17,7 +17,7 @@ const HeroBannerSkeleton = () => {
                 </div>
 
                 {/* Content lines (simulate line-clamp-4) */}
-                <div className="space-y-2 mt-2">
+                <div className="space-y-2 mt-2 ">
                     <div className="h-3 w-full bg-gray-200 rounded" />
                     <div className="h-3 w-11/12 bg-gray-200 rounded" />
                     <div className="h-3 w-10/12 bg-gray-200 rounded" />
@@ -25,7 +25,7 @@ const HeroBannerSkeleton = () => {
                 </div>
 
                 {/* Button skeleton */}
-                <div className="h-10 w-40 bg-gray-300 rounded-full mt-4" />
+                <div className="h-10 w-40 bg-gray-300 rounded-full mt-2" />
             </div>
 
             {/* Right Side: Image Skeleton */}

@@ -1,21 +1,20 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { LogoutButton } from '../../components';
-import { MdOutlineAccountCircle, MdOutlineArticle } from "react-icons/md";
-import { Container } from '../../components'
+import { MdOutlineAccountCircle, MdOutlineArticle, MdOutlineBookmarks } from "react-icons/md";
+import { Container } from '../../components';
 import { useSelector } from "react-redux";
 
 const ProfileLayout = () => {
     const [user, setUser] = useState(null);
 
     const navLinkStyle = (isActive) =>
-        `flex items-center px-4 py-3 rounded-md transition ${
-            isActive
-                ? 'bg-black text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
+        `flex items-center px-4 py-3 rounded-md transition ${isActive
+            ? 'bg-black text-white'
+            : 'bg-gray-100 text-black hover:bg-gray-200'
         }`;
 
-    const userData = useSelector(state => state.auth.userData)
+    const userData = useSelector(state => state.auth.userData);
 
     useEffect(() => {
         setUser({
@@ -58,6 +57,14 @@ const ProfileLayout = () => {
                         >
                             <MdOutlineArticle className="text-xl mr-2" />
                             Your Blogs
+                        </NavLink>
+
+                        <NavLink
+                            to="/profile/savedblogs"
+                            className={({ isActive }) => navLinkStyle(isActive)}
+                        >
+                            <MdOutlineBookmarks className="text-xl mr-2" />
+                            Saved Blogs
                         </NavLink>
 
                         <LogoutButton />

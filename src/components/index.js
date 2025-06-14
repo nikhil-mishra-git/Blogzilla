@@ -13,6 +13,7 @@ import LogoutButton from './LogoutButton'
 import HeroBanner from './HeroBanner'
 import ProfileDetail from './profile/ProfileDetail'
 import MyBlogs from './profile/MyBlogs'
+import SavedBlogs from './profile/SavedBlogs'
 import ProfileLayout from './profile/ProfileLayout'
 import Notification from './Notification'
 import SearchResult from './SearchResult'
@@ -39,5 +40,6 @@ export {
     Notification,
     SearchResult,
     BlogCardSkeleton,
-    HeroBannerSkeleton
+    HeroBannerSkeleton,
+    SavedBlogs
 }
