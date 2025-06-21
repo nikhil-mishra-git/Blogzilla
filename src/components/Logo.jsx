@@ -8,7 +8,7 @@ const Logo = () => {
             <img
                 src={logo}
                 alt="Blogzilla"
-                className={`h-14 w-auto object-contain`}
+                className={`h-12 md:h-14 w-auto object-contain`}
             />
         </Link>
     );
