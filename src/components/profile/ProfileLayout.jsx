@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 const ProfileLayout = () => {
     const [user, setUser] = useState(null);
+    const avatarUrl = useSelector((state) => state.auth.avatarUrl);
 
     const navLinkStyle = (isActive) =>
         `flex items-center px-4 py-3 rounded-md transition ${isActive
@@ -24,7 +25,6 @@ const ProfileLayout = () => {
     }, [userData]);
 
     const avatarSeed = user?.name || "default";
-    const avatarUrl = `https://avatar.iran.liara.run/public/boy`;
 
     return (
         <Container className="py-8 px-0">

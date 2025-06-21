@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isLoggedin: false,
-    userData: null
+    userData: null,
+    avatarUrl:null,
 }
 
 const authSlice = createSlice({
@@ -16,9 +17,12 @@ const authSlice = createSlice({
         logout: (state, action) => {
             state.isLoggedin = false;
             state.userData = null;
+        },
+        setAvtarUrl:(state, action)=>{
+          state.avatarUrl = action.payload
         }
     }
 })
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setAvtarUrl } = authSlice.actions;
 export default authSlice.reducer;

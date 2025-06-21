@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 const ProfileDetail = () => {
   const [user, setUser] = useState(null);
   const userData = useSelector((state) => state.auth.userData);
+  const avatarUrl = useSelector((state) => state.auth.avatarUrl);
 
   useEffect(() => {
     if (userData) {
@@ -14,7 +15,6 @@ const ProfileDetail = () => {
     }
   }, [userData]);
 
-  const avatarUrl = `https://avatar.iran.liara.run/public/boy`;
 
   return (
     <div className="max-w-sm mx-auto mt-20 p-8 rounded-xl shadow-md bg-white text-center text-black">

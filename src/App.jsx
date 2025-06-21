@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Header, Footer } from './components'
 import { Outlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { login as authLogin } from './features/authSlice'
+import { login as authLogin , setAvtarUrl } from './features/authSlice'
 import authService from './services/authService'
 import { Toaster } from 'react-hot-toast'
 import SearchResult from './components/SearchResult'
@@ -16,14 +16,23 @@ const App = () => {
       try {
         const currUserData = await authService.getUser()
         if (currUserData) {
-          dispatch(authLogin({ userData: currUserData }))
+          dispatch(authLogin({
+            userData: currUserData,
+          }));
         }
       } catch (error) {
         console.log('User not logged in or session expired')
       }
     }
+
     checkUser()
   }, [])
+
+  useEffect(() => {
+    dispatch(setAvtarUrl("https://avatar.iran.liara.run/public/boy"))
+  }, [])
+  
+
 
   return (
     <div>
